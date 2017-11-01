@@ -17,10 +17,9 @@ class Fluent::ResolvOutput < Fluent::Output
     tag = (@add_prefix + '.' + tag) if @add_prefix
     es.each do |time,record|
       record[@key_name] = Resolv.getname(record[@key_name]) rescue record[@key_name].empty? ? 'n/a' : record[@key_name]
-      Fluent::Engine.emit(tag, time, record)
+      router.emit(tag, time, record)
     end
     chain.next
   end
 
 end
-
